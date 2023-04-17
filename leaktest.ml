@@ -42,6 +42,7 @@ let image_dist_b dbf img =
 	let dist = Tensor.get d mindex |> Tensor.float_value in
 	dist,mindex
 
+
 let () = 
 	Printf.printf "cuda available: %b\n%!" (Cuda.is_available ());
 	let device = Torch.Device.cuda_if_available () in
@@ -54,6 +55,7 @@ let () =
 		(* generate a random image *)
 		let img = Tensor.(randn [image_res; image_res] ) 
 			|> Tensor.to_device ~device in
+		ignore( image_dist_a dbf img ); 
 		let dist_a,mindex_a = image_dist_a dbf img in
 		let dist_b,mindex_b = image_dist_b dbf img in
 		let df = (abs_float dist_a -. dist_b) in
