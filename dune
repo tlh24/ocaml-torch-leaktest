@@ -1,0 +1,5 @@
+(executables
+	(names leaktest)
+	(modules leaktest)
+	(libraries torch base)
+	)
