@@ -55,12 +55,15 @@ let () =
 		(* generate a random image *)
 		let img = Tensor.(randn [image_res; image_res] ) 
 			|> Tensor.to_device ~device in
-		ignore( image_dist_a dbf img ); 
+		
+		(* you can run either MSE calculation, both leak memory 
+			Demo running both *)
 		let dist_a,mindex_a = image_dist_a dbf img in
 		let dist_b,mindex_b = image_dist_b dbf img in
 		let df = (abs_float dist_a -. dist_b) in
 		assert (df < 0.001); 
 		assert (mindex_a = mindex_b); 
+		
 		if i mod 10 = 9 then (
 			Caml.Gc.full_major(); 
 			Printf.printf "-- ran Caml.Gc.full_major()\n"; 
