@@ -27,3 +27,12 @@ setup.log
 
 # Local OPAM switch
 _opam/
+
+# Cmake stuff
+_build/
+CMakeFiles/
+Makefile
+CMakeCache.txt
+cmake_install.cmake
+detect_cuda_compute_capabilities.cu
+detect_cuda_version.cc

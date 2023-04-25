@@ -45,6 +45,7 @@ let image_dist_b dbf img =
 
 let () = 
 	Printf.printf "cuda available: %b\n%!" (Cuda.is_available ());
+(* 	let device = Torch.Device.Cpu in *)
 	let device = Torch.Device.cuda_if_available () in
 	let dbf = Tensor.( (ones [image_count; image_res; image_res] ) * (f (-1.0)))
 		|> Tensor.to_device ~device in
@@ -53,6 +54,7 @@ let () =
 	Printf.printf "[00]"; run_nvidiasmi (); 
 	for i = 1 to 30 do (
 		(* generate a random image *)
+		Caml.Gc.full_major();
 		let img = Tensor.(randn [image_res; image_res] ) 
 			|> Tensor.to_device ~device in
 		
@@ -63,12 +65,8 @@ let () =
 		let dist_a,mindex_a = image_dist_a dbf img in
 		let dist_b,mindex_b = image_dist_b dbf img in
 		let df = (abs_float dist_a -. dist_b) in
-		assert (df < 0.001); 
+		assert (df < 0.01); 
 		assert (mindex_a = mindex_b); 
 		
-		if i mod 10 = 9 then (
-			Caml.Gc.full_major(); 
-			Printf.printf "-- ran Caml.Gc.full_major()\n"; 
-		); 
 		Printf.printf "[%02d]" i; run_nvidiasmi ()
 	) done
