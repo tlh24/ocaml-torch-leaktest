@@ -57,7 +57,9 @@ let () =
 			|> Tensor.to_device ~device in
 		
 		(* you can run either MSE calculation, both leak memory 
-			Demo running both *)
+			Demo running both 
+			Running image_dist_* within Tensor.no_grad does not change *)
+			
 		let dist_a,mindex_a = image_dist_a dbf img in
 		let dist_b,mindex_b = image_dist_b dbf img in
 		let df = (abs_float dist_a -. dist_b) in
