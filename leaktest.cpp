@@ -40,7 +40,7 @@ std::pair<int64_t, float> find_min_mse(const torch::Tensor& A, const torch::Tens
     auto A_reshaped = A.view({n, 1, -1}); // Shape: [n, 1, x * x]
     auto B_reshaped = B.view({1, -1}); // Shape: [1, x * x]
 
-    // Compute (A-B)^2 without creating a temporary tensor of shape [n, x, x].
+    // Compute (A-B)^2.  I think this requires a temp tensor, alas.
     auto squared_diff = (A_reshaped - B_reshaped).pow(2); // Shape: [n, x * x]
 
     // Sum over the last dimension [x * x].
